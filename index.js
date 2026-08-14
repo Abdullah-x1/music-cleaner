@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
-
+console.log('TOKEN exists:', !!process.env.TOKEN);
+console.log('Token length:', process.env.TOKEN?.length);
 let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
 setInterval(() => {
