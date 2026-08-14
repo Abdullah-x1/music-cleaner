@@ -1,0 +1,12 @@
+{
+  "token": "YOUR_TOKEN_HERE",
+  "owners": [
+    "YOUR_DISCORD_USER_ID"
+  ],
+  "channels": [
+    "YOUR_MUSIC_CHANNEL_ID"
+  ],
+  "deleteDelay": 5000,
+  "botMessageDelay": 30000,
+  "pinEmoji": "📌"
+}
