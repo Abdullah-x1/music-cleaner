@@ -1,10 +1,10 @@
 {
-  "token": "YOUR_TOKEN_HERE",
+  "token": "",
   "owners": [
-    "YOUR_DISCORD_USER_ID"
+    "455266807729618955"
   ],
   "channels": [
-    "YOUR_MUSIC_CHANNEL_ID"
+    "1514729916640268379","1537624108865552415"
   ],
   "deleteDelay": 5000,
   "botMessageDelay": 30000,
