@@ -1,8 +1,5 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
-const { handleMessageDelete } = require('./src/cleaner');
-const { handleCommand } = require('./src/commands');
-const { initDistube } = require('./src/player');
 
 let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
@@ -21,27 +18,31 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.GuildMessageReactions,
-    GatewayIntentBits.GuildMembers
+    GatewayIntentBits.GuildMessageReactions
   ]
 });
 
 client.on('clientReady', () => {
   console.log(`Logged in as ${client.user.tag}`);
-  initDistube(client, config);
 });
 
-// Handle messages
 client.on('messageCreate', async (message) => {
   if (!config.channels.includes(message.channel.id)) return;
   if (message.author.id === client.user.id) return;
 
-  if (!message.author.bot) {
-    await handleCommand(message, config);
-  }
+  const delay = message.author.bot ? config.botMessageDelay : config.deleteDelay;
 
-  await handleMessageDelete(message, config);
+  setTimeout(async () => {
+    try {
+      const msg = await message.channel.messages.fetch(message.id);
+      const reaction = msg.reactions.cache.get(config.pinEmoji);
+      if (reaction) {
+        const users = await reaction.users.fetch();
+        if (config.owners.some(id => users.has(id))) return;
+      }
+      await msg.delete();
+    } catch (e) {}
+  }, delay);
 });
 
 client.login(config.token);
