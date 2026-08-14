@@ -1,6 +1,9 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 
+console.log('TOKEN exists:', !!process.env.TOKEN);
+console.log('Token length:', process.env.TOKEN?.length);
+
 let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
 setInterval(() => {
@@ -45,4 +48,18 @@ client.on('messageCreate', async (message) => {
   }, delay);
 });
 
-client.login(config.token);
+// Keep Render happy
+const http = require('http');
+http.createServer((req, res) => res.end('Bot is running!')).listen(process.env.PORT || 3000);
+
+process.on('unhandledRejection', (error) => {
+  console.error('Unhandled rejection:', error);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught exception:', error);
+});
+
+client.login(process.env.TOKEN || config.token).catch(err => {
+  console.error('Login failed:', err.message);
+});
