@@ -1,7 +1,6 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
-console.log('TOKEN exists:', !!process.env.TOKEN);
-console.log('Token length:', process.env.TOKEN?.length);
+
 let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
 setInterval(() => {
@@ -45,8 +44,5 @@ client.on('messageCreate', async (message) => {
     } catch (e) {}
   }, delay);
 });
-// Keep Render happy
-const http = require('http');
-http.createServer((req, res) => res.end('Bot is running!')).listen(process.env.PORT || 3000);
 
-client.login(process.env.TOKEN || config.token);
+client.login(config.token);
